@@ -29,10 +29,10 @@ const cells = document.querySelectorAll(".cell");
 const xPlayer = document.querySelector(".x-player");
 const oPlayer = document.querySelector(".o-player");
 
-const xIconLink = "assets/images/icon-x.svg";
-const xOutlineLink = "assets/images/icon-x-outline.svg";
-const oIconLink = "assets/images/icon-o.svg";
-const oOutlineLink = "assets/images/icon-o-outline.svg";
+const xIconLink = "./assets/images/icon-x.svg";
+const xOutlineLink = "./assets/images/icon-x-outline.svg";
+const oIconLink = "./assets/images/icon-o.svg";
+const oOutlineLink = "./assets/images/icon-o-outline.svg";
 const xTurnIcon = `<svg
                 class="turn-x"
                 width="20"
@@ -58,8 +58,8 @@ const oTurnIcon = `<svg
                   fill="currentColor"
                 />
               </svg>`;
-const xWinner = "assets/images/icon-x-winner.svg";
-const oWinner = "assets/images/icon-o-winner.svg";
+const xWinner = "./assets/images/icon-x-winner.svg";
+const oWinner = "./assets/images/icon-o-winner.svg";
 
 const countX = document.querySelector(".count-x");
 const countTie = document.querySelector(".count-tie");
