@@ -1,0 +1,33 @@
+//  Referencias al DOM
+
+export const UI = {
+  xStart: document.querySelector(".choice-box__container-x"),
+  oStart: document.querySelector(".choice-box__container-o"),
+  btnVsCPU: document.querySelector(".btn-vs-cpu"),
+  btnVsPlayer: document.querySelector(".btn-vs-player"),
+  btnRestart: document.querySelector(".restart-btn"),
+  btnTieNext: document.querySelector(".tie-screen .btn-next-round"),
+  btnTieQuit: document.querySelector(".tie-screen .btn-quit"),
+  btnWinNext: document.querySelector(".win-screen .btn-next-round"),
+  btnWinQuit: document.querySelector(".win-screen .btn-quit"),
+  btnCancel: document.querySelector(".restart-screen .btn-cancel"),
+  btnRestartGame: document.querySelector(".restart-screen .btn-restart"),
+  overlay: document.querySelector(".overlay"),
+  banner: document.querySelector(".banner"),
+  startScreen: document.querySelector(".start-screen"),
+  gameScreen: document.querySelector(".game-screen"),
+  restartScreen: document.querySelector(".restart-screen"),
+  tieScreen: document.querySelector(".tie-screen"),
+  winScreen: document.querySelector(".win-screen"),
+  winScreenText: document.querySelector(".win-screen-result__text"),
+  circleWinContainer: document.querySelector(".circle-win-container"),
+  crossWinContainer: document.querySelector(".cross-win-container"),
+  cellsContainer: document.querySelector(".cells-container"),
+  turnContainer: document.querySelector(".turn-icon"),
+  cells: document.querySelectorAll(".cell"),
+  xPlayer: document.querySelector(".x-player"),
+  oPlayer: document.querySelector(".o-player"),
+  countX: document.querySelector(".count-x"),
+  countTie: document.querySelector(".count-tie"),
+  countO: document.querySelector(".count-o")
+};
