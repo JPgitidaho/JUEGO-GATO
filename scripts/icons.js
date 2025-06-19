@@ -1,4 +1,4 @@
-// icons.js - Rutas de iconos SVG
+//  Rutas de iconos SVG
 
 export const Icons = {
   x: "./assets/images/icon-x.svg",

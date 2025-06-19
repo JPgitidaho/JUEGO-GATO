@@ -1,70 +1,104 @@
-// Manejo de eventos
 import { UI } from "./ui.js";
 import { GameBoard } from "./gameBoard.js";
-import { setPlayerMark } from "./state.js";
 
-let newGame = null;
+let game;
 
-export function initEvents() {
-  UI.xStart.addEventListener("click", () => {
-    UI.xStart.classList.add("active");
-    UI.oStart.classList.remove("active");
-    UI.xPlayer.textContent = "(YOU)";
-    UI.oPlayer.textContent = "(CPU)";
-    setPlayerMark("X");
+function handleMarkSelection() {
+  const { xStart, oStart, xPlayer, oPlayer } = UI;
+
+  xStart.addEventListener("click", () => {
+    xStart.classList.add("active");
+    oStart.classList.remove("active");
+    xPlayer.textContent = "(YOU)";
+    oPlayer.textContent = "(CPU)";
+    if (game) game.playerMark = "X";
   });
 
-  UI.oStart.addEventListener("click", () => {
-    UI.oStart.classList.add("active");
-    UI.xStart.classList.remove("active");
-    UI.xPlayer.textContent = "(CPU)";
-    UI.oPlayer.textContent = "(YOU)";
-    setPlayerMark("O");
+  oStart.addEventListener("click", () => {
+    oStart.classList.add("active");
+    xStart.classList.remove("active");
+    xPlayer.textContent = "(CPU)";
+    oPlayer.textContent = "(YOU)";
+    if (game) game.playerMark = "O";
   });
-
-  UI.btnVsCPU.addEventListener("click", () => {
-    newGame = new GameBoard(false, UI.xStart.classList.contains("active") ? "X" : "O");
-    newGame.startGame();
-    if (newGame.playerMark === "O") newGame.computerMove();
-    registerCellEvents();
-  });
-
-  UI.btnVsPlayer.addEventListener("click", () => {
-    newGame = new GameBoard(true, "X");
-    const isYou = UI.xPlayer.textContent === "(YOU)";
-    UI.xPlayer.textContent = isYou ? "P1" : "P2";
-    UI.oPlayer.textContent = isYou ? "P2" : "P1";
-    newGame.startGame();
-    registerCellEvents();
-  });
-
-  UI.btnRestart.addEventListener("click", () => {
-    UI.overlay.style.display = "flex";
-    UI.banner.style.display = "flex";
-    UI.restartScreen.style.display = "flex";
-    UI.btnCancel.style.display = "block";
-    UI.btnRestartGame.style.display = "block";
-  });
-
-  UI.btnRestartGame.addEventListener("click", () => newGame.resetGame());
-  UI.btnCancel.addEventListener("click", () => {
-    UI.overlay.style.display = "none";
-    UI.banner.style.display = "none";
-    UI.restartScreen.style.display = "none";
-    UI.btnCancel.style.display = "none";
-    UI.btnRestartGame.style.display = "none";
-  });
-
-  UI.btnTieNext.addEventListener("click", () => newGame.resetGame());
-  UI.btnTieQuit.addEventListener("click", () => newGame.resetGame());
-  UI.btnWinNext.addEventListener("click", () => newGame.resetGame());
-  UI.btnWinQuit.addEventListener("click", () => newGame.resetGame());
 }
 
-function registerCellEvents() {
-  UI.cells.forEach((cell, index) => {
-    cell.addEventListener("mouseover", () => newGame.mouseOver(cell));
-    cell.addEventListener("mouseout", () => newGame.mouseOut(cell));
-    cell.addEventListener("click", () => newGame.selectCell(cell, index));
+function handleStartGame() {
+  const { btnVsCPU, btnVsPlayer, xStart, xPlayer, oPlayer } = UI;
+
+  btnVsCPU.addEventListener("click", () => {
+    const mark = xStart.classList.contains("active") ? "X" : "O";
+    game = new GameBoard(false, mark);
+    game.startGame();
+    if (game.playerMark === "O") game.computerMove();
+    handleCellEvents();
   });
+
+  btnVsPlayer.addEventListener("click", () => {
+    game = new GameBoard(true, "X");
+
+    const isYou = xPlayer.textContent === "(YOU)";
+    xPlayer.textContent = isYou ? "P1" : "P2";
+    oPlayer.textContent = isYou ? "P2" : "P1";
+
+    game.startGame();
+    handleCellEvents();
+  });
+}
+
+function handleBannerActions() {
+  const {
+    btnRestart,
+    overlay, banner,
+    restartScreen, btnCancel, btnRestartGame,
+    btnTieQuit, btnTieNext,
+    btnWinQuit, btnWinNext
+  } = UI;
+
+  // Mostrar pantalla de confirmación de reinicio
+  btnRestart.addEventListener("click", () => {
+    overlay.style.display = "flex";
+    banner.style.display = "flex";
+    restartScreen.style.display = "flex";
+    btnCancel.style.display = "block";
+    btnRestartGame.style.display = "block";
+  });
+
+  // Confirmar reinicio total
+  btnRestartGame.addEventListener("click", () => {
+    game.resetGame();
+  });
+
+  // Cancelar reinicio
+  btnCancel.addEventListener("click", () => {
+    overlay.style.display = "none";
+    banner.style.display = "none";
+    restartScreen.style.display = "none";
+    btnCancel.style.display = "none";
+    btnRestartGame.style.display = "none";
+  });
+
+  // Botones de “QUIT” (empate o victoria)
+  btnTieQuit.addEventListener("click", () => game.quitGame());
+  btnWinQuit.addEventListener("click", () => game.quitGame());
+
+  // Botones “NEXT ROUND”
+  btnTieNext.addEventListener("click", () => game.resetGame());
+  btnWinNext.addEventListener("click", () => game.resetGame());
+}
+
+function handleCellEvents() {
+  const { cells } = UI;
+
+  cells.forEach((cell, index) => {
+    cell.addEventListener("mouseover", () => game.mouseOver(cell));
+    cell.addEventListener("mouseout", () => game.mouseOut(cell));
+    cell.addEventListener("click", () => game.selectCell(cell, index));
+  });
+}
+
+export function initEvents() {
+  handleMarkSelection();
+  handleStartGame();
+  handleBannerActions();
 }
